@@ -16,50 +16,25 @@
       color: #333;
       margin-bottom: 30px;
     }
-    .card {
-      display: inline-block;
-      width: 150px;
-      margin: 10px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      cursor: pointer;
-      background: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .card img {
-      width: 100%;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 6px;
-    }
-    .card h3 {
-      margin-top: 8px;
-      font-size: 16px;
-      color: #333;
-    }
     .product {
-      display: none;
       background-color: #fff;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
+      margin: 0 auto 30px;
       max-width: 350px;
-      margin: 0 auto;
-      text-align: left;
     }
     video {
       width: 100%;
       border-radius: 8px;
-      margin-bottom: 15px;
     }
     .product h2 {
-      margin: 10px 0;
-      color: #333;
+      margin: 15px 0 5px;
     }
     .product p {
       font-size: 16px;
       color: #666;
+      margin-bottom: 15px;
     }
     .product button {
       background-color: #0088cc;
@@ -69,21 +44,15 @@
       border-radius: 5px;
       font-size: 15px;
       cursor: pointer;
-      margin-top: 15px;
     }
     .product button:hover {
       background-color: #006699;
     }
-    .close-btn {
+    button.close-btn {
       background-color: #444;
       margin-top: 20px;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
     }
-    .close-btn:hover {
+    button.close-btn:hover {
       background-color: #222;
     }
   </style>
@@ -92,38 +61,30 @@
 
   <h1>Livraison 7/7</h1>
 
-  <!-- PAGE D’ACCUEIL AVEC MINIATURE -->
-  <div id="home">
-    <div class="card" onclick="afficherProduit()">
-      <img src="https://raw.githubusercontent.com/Cosaapp/mini-app-produits/main/IMG_1146.webp" alt="Hash Dry" />
-      <h3>Hash Dry</h3>
-    </div>
-  </div>
-
-  <!-- PAGE PRODUIT -->
-  <div id="product" class="product">
-    <video controls id="product-video">
-      <source src="https://raw.githubusercontent.com/Cosaapp/mini-app-produits/main/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4" />
+  <!-- Produit 1 : Hash Dry -->
+  <div class="product">
+    <video controls>
+      <source src="https://raw.githubusercontent.com/Cosaapp/mini-app-produits/main/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
       Votre navigateur ne supporte pas la lecture de vidéo.
     </video>
     <h2>Hash Dry</h2>
     <p>Prix : 5€ le gramme</p>
     <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
-    <br />
-    <button class="close-btn" onclick="retourAccueil()">Retour</button>
   </div>
 
-  <script>
-    function afficherProduit() {
-      document.getElementById("home").style.display = "none";
-      document.getElementById("product").style.display = "block";
-    }
+  <!-- Produit 2 : Weed -->
+  <div class="product">
+    <video controls>
+      <source src="https://raw.githubusercontent.com/Cosaapp/mini-app-produits/main/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
+      Votre navigateur ne supporte pas la lecture de vidéo.
+    </video>
+    <h2>Weed</h2>
+    <p>Prix : 8€ le gramme</p>
+    <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
+  </div>
 
-    function retourAccueil() {
-      document.getElementById("product").style.display = "none";
-      document.getElementById("home").style.display = "block";
-    }
-  </script>
+  <!-- Bouton Fermer l'app -->
+  <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
 
 </body>
 </html>
