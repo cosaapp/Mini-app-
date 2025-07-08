@@ -3,49 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mini App Telegram</title>
+  <title>Boutique Telegram</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
       text-align: center;
-      padding: 50px;
-      background-color: #f5f5f5;
     }
 
     h1 {
       color: #333;
+      margin-bottom: 30px;
     }
 
-    button {
-      padding: 15px 30px;
-      font-size: 16px;
-      margin: 10px;
-      border: none;
+    .product {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 350px;
+    }
+
+    .product img {
+      width: 100%;
+      max-width: 250px;
       border-radius: 8px;
+    }
+
+    .product h2 {
+      margin: 15px 0 5px;
+    }
+
+    .product p {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .product button {
       background-color: #0088cc;
       color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 15px;
       cursor: pointer;
     }
 
-    button:hover {
+    .product button:hover {
       background-color: #006699;
+    }
+
+    .menu-buttons {
+      margin-top: 40px;
+    }
+
+    .menu-buttons button {
+      margin: 10px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Bienvenue dans la Mini App</h1>
-  <p>Utilise les boutons ci-dessous :</p>
+  <h1>Bienvenue dans la boutique</h1>
 
-  <!-- Bouton pour fermer l'app Telegram -->
-  <button onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
+  <!-- Produit 1 -->
+  <div class="product">
+    <img src="https://via.placeholder.com/250x250?text=Casquette" alt="Casquette stylée">
+    <h2>Casquette stylée</h2>
+    <p>Prix : 15€</p>
+    <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
+  </div>
 
-  <!-- Bouton pour ouvrir le bot Telegram -->
-  <a href="https://t.me/Cosa2NostraBot" target="_blank">
-    <button>Ouvrir le bot</button>
-  </a>
+  <!-- Produit 2 -->
+  <div class="product">
+    <img src="https://via.placeholder.com/250x250?text=T-shirt" alt="T-shirt original">
+    <h2>T-shirt original</h2>
+    <p>Prix : 25€</p>
+    <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
+  </div>
 
-  <!-- Script Telegram Web App -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Produit 3 -->
+  <div class="product">
+    <img src="https://via.placeholder.com/250x250?text=Hoodie" alt="Hoodie noir">
+    <h2>Hoodie noir</h2>
+    <p>Prix : 45€</p>
+    <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
+  </div>
+
+  <!-- Boutons de contrôle -->
+  <div class="menu-buttons">
+    <button onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
+    <a href="https://t.me/Cosa2NostraBot" target="_blank">
+      <button>Ouvrir le bot</button>
+    </a>
+  </div>
+
 </body>
 </html>
