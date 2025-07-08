@@ -26,13 +26,12 @@
       cursor: pointer;
       background: white;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      vertical-align: top;
     }
     .card img {
-      width: 150px;
+      width: 100%;
       height: 100px;
-      border-radius: 6px;
       object-fit: cover;
+      border-radius: 6px;
     }
     .card h3 {
       margin-top: 8px;
@@ -40,28 +39,27 @@
       color: #333;
     }
     .product {
+      display: none;
       background-color: #fff;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
-      margin: 0 auto 30px;
       max-width: 350px;
+      margin: 0 auto;
       text-align: left;
     }
     video {
       width: 100%;
       border-radius: 8px;
-      display: block;
       margin-bottom: 15px;
     }
     .product h2 {
-      margin: 15px 0 5px;
+      margin: 10px 0;
       color: #333;
     }
     .product p {
       font-size: 16px;
       color: #666;
-      margin-bottom: 15px;
     }
     .product button {
       background-color: #0088cc;
@@ -71,11 +69,12 @@
       border-radius: 5px;
       font-size: 15px;
       cursor: pointer;
+      margin-top: 15px;
     }
     .product button:hover {
       background-color: #006699;
     }
-    button.close-btn {
+    .close-btn {
       background-color: #444;
       margin-top: 20px;
       color: white;
@@ -84,7 +83,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    button.close-btn:hover {
+    .close-btn:hover {
       background-color: #222;
     }
   </style>
@@ -93,40 +92,36 @@
 
   <h1>Livraison 7/7</h1>
 
+  <!-- PAGE D’ACCUEIL AVEC MINIATURE -->
   <div id="home">
-    <!-- Miniature du produit -->
-    <div class="card" onclick="afficherProduit('Hash Dry', 5, 'https://raw.githubusercontent.com/Cosaapp/mini-app-produits/main/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4')">
+    <div class="card" onclick="afficherProduit()">
       <img src="https://raw.githubusercontent.com/Cosaapp/mini-app-produits/main/IMG_1146.webp" alt="Hash Dry" />
       <h3>Hash Dry</h3>
     </div>
   </div>
 
-  <div id="product" style="display:none;">
-    <div class="product">
-      <video controls id="product-video">
-        <source src="" type="video/mp4" />
-        Votre navigateur ne supporte pas la lecture de vidéo.
-      </video>
-      <h2 id="product-name"></h2>
-      <p id="product-price"></p>
-      <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
-    </div>
+  <!-- PAGE PRODUIT -->
+  <div id="product" class="product">
+    <video controls id="product-video">
+      <source src="https://raw.githubusercontent.com/Cosaapp/mini-app-produits/main/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4" />
+      Votre navigateur ne supporte pas la lecture de vidéo.
+    </video>
+    <h2>Hash Dry</h2>
+    <p>Prix : 5€ le gramme</p>
+    <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
+    <br />
     <button class="close-btn" onclick="retourAccueil()">Retour</button>
   </div>
 
   <script>
-    function afficherProduit(nom, prix, videoUrl) {
-      document.getElementById('home').style.display = 'none';
-      document.getElementById('product').style.display = 'block';
-      document.getElementById('product-name').textContent = nom;
-      document.getElementById('product-price').textContent = `Prix : ${prix}€ le gramme`;
-      document.getElementById('product-video').querySelector('source').src = videoUrl;
-      document.getElementById('product-video').load();
+    function afficherProduit() {
+      document.getElementById("home").style.display = "none";
+      document.getElementById("product").style.display = "block";
     }
 
     function retourAccueil() {
-      document.getElementById('product').style.display = 'none';
-      document.getElementById('home').style.display = 'block';
+      document.getElementById("product").style.display = "none";
+      document.getElementById("home").style.display = "block";
     }
   </script>
 
