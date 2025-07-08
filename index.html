@@ -16,13 +16,42 @@
       color: #333;
       margin-bottom: 30px;
     }
+
+    /* Accueil */
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 150px;
+      cursor: pointer;
+      text-decoration: none;
+      color: black;
+    }
+    .card img {
+      width: 100%;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    .card h3 {
+      margin: 10px;
+      font-size: 16px;
+    }
+
+    /* Fiche produit */
     .product {
       background-color: #fff;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
-      margin: 0 auto 30px;
+      margin: 0 auto;
       max-width: 350px;
+      display: none;
     }
     video {
       width: 100%;
@@ -48,40 +77,66 @@
     .product button:hover {
       background-color: #006699;
     }
-    button.close-btn {
+    .close-btn, .back-btn {
       background-color: #444;
       margin-top: 20px;
     }
-    button.close-btn:hover {
+    .close-btn:hover, .back-btn:hover {
       background-color: #222;
     }
   </style>
 </head>
 <body>
 
-  <h1>Livraison 7/7</h1>
+  <h1 id="main-title">Livraison 7/7</h1>
 
-  <div class="product">
-    <video controls>
-      <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
-      Votre navigateur ne supporte pas la lecture de vidéo.
-    </video>
-    <h2>Hash Dry</h2>
-    <p>Prix : 5€ le gramme</p>
-    <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
+  <!-- ACCUEIL -->
+  <div id="accueil" class="grid">
+    <div class="card" onclick="showProduct('Hash Dry', 5, 'C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4')">
+      <img src="https://via.placeholder.com/150?text=Hash" alt="Hash Dry">
+      <h3>Hash Dry</h3>
+    </div>
+    <div class="card" onclick="showProduct('Weed', 8, 'C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4')">
+      <img src="https://via.placeholder.com/150?text=Weed" alt="Weed">
+      <h3>Weed</h3>
+    </div>
   </div>
 
-  <div class="product">
-    <video controls>
-      <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
+  <!-- FICHE PRODUIT -->
+  <div id="fiche-produit" class="product">
+    <video id="video" controls>
+      <source id="videoSource" src="" type="video/mp4">
       Votre navigateur ne supporte pas la lecture de vidéo.
     </video>
-    <h2>Weed</h2>
-    <p>Prix : 8€ le gramme</p>
+    <h2 id="nom-produit">Produit</h2>
+    <p id="prix-produit">Prix : €</p>
     <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
+    <br>
+    <button class="back-btn" onclick="goBack()">Retour à l'accueil</button>
+    <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
   </div>
 
-  <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
+  <script>
+    function showProduct(nom, prix, videoFile) {
+      // Met à jour les infos produit
+      document.getElementById("nom-produit").textContent = nom;
+      document.getElementById("prix-produit").textContent = `Prix : ${prix}€ le gramme`;
+      document.getElementById("videoSource").src = `https://cosaapp.github.io/Mini-app-/${videoFile}`;
+      document.getElementById("video").load();
+
+      // Affiche fiche produit, cache accueil
+      document.getElementById("accueil").style.display = "none";
+      document.getElementById("fiche-produit").style.display = "block";
+      document.getElementById("main-title").textContent = nom;
+    }
+
+    function goBack() {
+      // Retour à l’accueil
+      document.getElementById("accueil").style.display = "flex";
+      document.getElementById("fiche-produit").style.display = "none";
+      document.getElementById("main-title").textContent = "Livraison 7/7";
+    }
+  </script>
 
 </body>
 </html>
