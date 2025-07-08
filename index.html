@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boutique Telegram</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Livraison 7/7</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
@@ -12,37 +12,30 @@
       padding: 20px;
       text-align: center;
     }
-
     h1 {
       color: #333;
       margin-bottom: 30px;
     }
-
     .product {
       background-color: #fff;
       border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
-      margin: 20px auto;
+      margin: 0 auto 30px;
       max-width: 350px;
     }
-
     .product img {
-      width: 100%;
-      max-width: 250px;
+      width: 250px;
       border-radius: 8px;
     }
-
     .product h2 {
       margin: 15px 0 5px;
     }
-
     .product p {
       font-size: 16px;
       color: #666;
       margin-bottom: 15px;
     }
-
     .product button {
       background-color: #0088cc;
       color: white;
@@ -52,55 +45,30 @@
       font-size: 15px;
       cursor: pointer;
     }
-
     .product button:hover {
       background-color: #006699;
     }
-
-    .menu-buttons {
-      margin-top: 40px;
+    button.close-btn {
+      background-color: #444;
+      margin-top: 20px;
     }
-
-    .menu-buttons button {
-      margin: 10px;
+    button.close-btn:hover {
+      background-color: #222;
     }
   </style>
 </head>
 <body>
 
-  <h1>Bienvenue dans la boutique</h1>
+  <h1>Livraison 7/7</h1>
 
-  <!-- Produit 1 -->
   <div class="product">
-    <img src="https://via.placeholder.com/250x250?text=Casquette" alt="Casquette stylée">
-    <h2>Casquette stylée</h2>
-    <p>Prix : 15€</p>
+    <img src="https://via.placeholder.com/250x250?text=Hash+Dry" alt="Hash Dry" />
+    <h2>Hash Dry</h2>
+    <p>Prix : 5€ le gramme</p>
     <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
   </div>
 
-  <!-- Produit 2 -->
-  <div class="product">
-    <img src="https://via.placeholder.com/250x250?text=T-shirt" alt="T-shirt original">
-    <h2>T-shirt original</h2>
-    <p>Prix : 25€</p>
-    <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
-  </div>
-
-  <!-- Produit 3 -->
-  <div class="product">
-    <img src="https://via.placeholder.com/250x250?text=Hoodie" alt="Hoodie noir">
-    <h2>Hoodie noir</h2>
-    <p>Prix : 45€</p>
-    <a href="https://t.me/Cosa2NostraBot"><button>Commander</button></a>
-  </div>
-
-  <!-- Boutons de contrôle -->
-  <div class="menu-buttons">
-    <button onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
-    <a href="https://t.me/Cosa2NostraBot" target="_blank">
-      <button>Ouvrir le bot</button>
-    </a>
-  </div>
+  <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
 
 </body>
 </html>
