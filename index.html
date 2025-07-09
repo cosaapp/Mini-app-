@@ -21,7 +21,25 @@
     .subtitle {
       color: #ccc;
       font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .category-buttons {
       margin-bottom: 30px;
+    }
+    .category-buttons button {
+      background-color: #0088cc;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .category-buttons button:hover,
+    .category-buttons button.active {
+      background-color: #006699;
     }
     .product {
       background-color: #111;
@@ -30,6 +48,7 @@
       padding: 20px;
       margin: 0 auto 30px;
       max-width: 350px;
+      display: none; /* Masqué par défaut, on affichera via JS */
     }
     video {
       width: 100%;
@@ -59,6 +78,10 @@
     button.close-btn {
       background-color: #444;
       margin-top: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 15px;
+      cursor: pointer;
     }
     button.close-btn:hover {
       background-color: #222;
@@ -70,8 +93,14 @@
   <h1>CosaNostraShop</h1>
   <div class="subtitle">Livraison 7/7 — 14h à 00h</div>
 
+  <div class="category-buttons">
+    <button id="btn-all" class="active">Tous</button>
+    <button id="btn-weed">Weed</button>
+    <button id="btn-hash">Hash</button>
+  </div>
+
   <!-- Produit 1 : Hash Dry -->
-  <div class="product">
+  <div class="product" data-category="hash">
     <video controls>
       <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
       Votre navigateur ne supporte pas la lecture de vidéo.
@@ -84,7 +113,7 @@
   </div>
 
   <!-- Produit 2 : Weed -->
-  <div class="product">
+  <div class="product" data-category="weed">
     <video controls>
       <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4">
       Votre navigateur ne supporte pas la lecture de vidéo.
@@ -97,6 +126,52 @@
   </div>
 
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
+
+  <script>
+    const btnAll = document.getElementById('btn-all');
+    const btnWeed = document.getElementById('btn-weed');
+    const btnHash = document.getElementById('btn-hash');
+    const products = document.querySelectorAll('.product');
+    const buttons = [btnAll, btnWeed, btnHash];
+
+    function setActiveButton(activeBtn) {
+      buttons.forEach(btn => {
+        if (btn === activeBtn) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function showProducts(category) {
+      products.forEach(product => {
+        if (category === 'all' || product.dataset.category === category) {
+          product.style.display = 'block';
+        } else {
+          product.style.display = 'none';
+        }
+      });
+    }
+
+    // Par défaut on affiche tous les produits
+    showProducts('all');
+
+    btnAll.addEventListener('click', () => {
+      setActiveButton(btnAll);
+      showProducts('all');
+    });
+
+    btnWeed.addEventListener('click', () => {
+      setActiveButton(btnWeed);
+      showProducts('weed');
+    });
+
+    btnHash.addEventListener('click', () => {
+      setActiveButton(btnHash);
+      showProducts('hash');
+    });
+  </script>
 
 </body>
 </html>
