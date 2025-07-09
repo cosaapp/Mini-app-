@@ -63,11 +63,11 @@ h1 {
 
 video {
   width: 100%;
-  max-width: 350px; /* taille max pour que la vidéo reste dans le bloc */
-  height: auto; /* garder les proportions */
+  max-width: 350px;
+  height: auto;
   border-radius: 8px;
   display: block;
-  margin: 0 auto; /* centrer la vidéo */
+  margin: 0 auto;
 }
 
 .product h2 {
