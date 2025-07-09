@@ -23,24 +23,70 @@
       font-size: 16px;
       margin-bottom: 20px;
     }
-    .category-buttons {
+
+    /* Bouton catégories transparent avec contour */
+    .dropdown {
+      position: relative;
+      display: inline-block;
       margin-bottom: 30px;
     }
-    .category-buttons button {
-      background-color: #0088cc;
+    .dropbtn {
+      background-color: transparent;
       color: white;
-      border: none;
+      border: 2px solid white;
       padding: 10px 20px;
-      margin: 0 10px;
-      border-radius: 5px;
       font-size: 16px;
       cursor: pointer;
+      border-radius: 5px;
+      min-width: 130px;
+      text-align: left;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dropbtn:focus {
+      outline: none;
+      box-shadow: 0 0 5px #0088cc;
+    }
+    /* Petite flèche à droite */
+    .dropbtn::after {
+      content: '▼';
+      font-size: 12px;
+      margin-left: 10px;
+      opacity: 0.7;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #111;
+      min-width: 130px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      z-index: 1;
+      left: 0;
+      margin-top: 5px;
+      text-align: left;
+    }
+    .dropdown-content button {
+      background-color: transparent;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      width: 100%;
+      text-align: left;
+      font-size: 15px;
+      cursor: pointer;
+      border-radius: 0;
       transition: background-color 0.3s ease;
     }
-    .category-buttons button:hover,
-    .category-buttons button.active {
-      background-color: #006699;
+    .dropdown-content button:hover {
+      background-color: #0088cc;
+      color: white;
     }
+
     .product {
       background-color: #111;
       border-radius: 10px;
@@ -48,7 +94,7 @@
       padding: 20px;
       margin: 0 auto 30px;
       max-width: 350px;
-      display: none; /* Masqué par défaut, on affichera via JS */
+      display: none; /* Masqué par défaut */
     }
     video {
       width: 100%;
@@ -93,10 +139,13 @@
   <h1>CosaNostraShop</h1>
   <div class="subtitle">Livraison 7/7 — 14h à 00h</div>
 
-  <div class="category-buttons">
-    <button id="btn-all" class="active">Tous</button>
-    <button id="btn-weed">Weed</button>
-    <button id="btn-hash">Hash</button>
+  <div class="dropdown">
+    <button class="dropbtn" id="categoryBtn">Catégories</button>
+    <div class="dropdown-content" id="dropdownMenu">
+      <button data-category="all">Tous</button>
+      <button data-category="weed">Weed</button>
+      <button data-category="hash">Hash</button>
+    </div>
   </div>
 
   <!-- Produit 1 : Hash Dry -->
@@ -107,7 +156,7 @@
     </video>
     <h2>Hash Dry</h2>
     <p>Prix : 5€ le gramme</p>
-    <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
+    <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank" rel="noopener">
       <button>Commander</button>
     </a>
   </div>
@@ -120,7 +169,7 @@
     </video>
     <h2>Weed</h2>
     <p>Prix : 8€ le gramme</p>
-    <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
+    <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank" rel="noopener">
       <button>Commander</button>
     </a>
   </div>
@@ -128,22 +177,11 @@
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
 
   <script>
-    const btnAll = document.getElementById('btn-all');
-    const btnWeed = document.getElementById('btn-weed');
-    const btnHash = document.getElementById('btn-hash');
+    const categoryBtn = document.getElementById('categoryBtn');
+    const dropdownMenu = document.getElementById('dropdownMenu');
     const products = document.querySelectorAll('.product');
-    const buttons = [btnAll, btnWeed, btnHash];
 
-    function setActiveButton(activeBtn) {
-      buttons.forEach(btn => {
-        if (btn === activeBtn) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-    }
-
+    // Fonction pour afficher les produits selon catégorie
     function showProducts(category) {
       products.forEach(product => {
         if (category === 'all' || product.dataset.category === category) {
@@ -154,22 +192,30 @@
       });
     }
 
-    // Par défaut on affiche tous les produits
+    // Par défaut on affiche tous
     showProducts('all');
 
-    btnAll.addEventListener('click', () => {
-      setActiveButton(btnAll);
-      showProducts('all');
+    // Toggle affichage dropdown
+    categoryBtn.addEventListener('click', () => {
+      const isVisible = dropdownMenu.style.display === 'block';
+      dropdownMenu.style.display = isVisible ? 'none' : 'block';
     });
 
-    btnWeed.addEventListener('click', () => {
-      setActiveButton(btnWeed);
-      showProducts('weed');
+    // Clic sur une catégorie dans le menu
+    dropdownMenu.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const selectedCategory = e.target.getAttribute('data-category');
+        showProducts(selectedCategory);
+        categoryBtn.textContent = btn.textContent + " ▼"; // Affiche la catégorie choisie
+        dropdownMenu.style.display = 'none';
+      });
     });
 
-    btnHash.addEventListener('click', () => {
-      setActiveButton(btnHash);
-      showProducts('hash');
+    // Clic en dehors du menu dropdown ferme le menu
+    window.addEventListener('click', (e) => {
+      if (!categoryBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.style.display = 'none';
+      }
     });
   </script>
 
