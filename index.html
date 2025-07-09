@@ -182,7 +182,7 @@
     <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
       <button>Commander sur Snap</button>
     </a>
-    <button id="copy-btn">📋 Copier le panier</button>
+    <button id="copy-btn">📋 Copier la commande pour Snapchat</button>
   </div>
 
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
@@ -249,7 +249,7 @@
         return;
       }
 
-      let text = "🛒 Commande CosaNostraShop:\n";
+      let text = "🛒 Commande pour Snapchat - CosaNostraShop :\n";
       let total = 0;
 
       for (const name in cartItems) {
@@ -261,7 +261,7 @@
       text += `\n💶 Total : ${total}€`;
 
       navigator.clipboard.writeText(text).then(() => {
-        alert("✅ Panier copié !");
+        alert("✅ Commande copiée !");
       }).catch(() => {
         alert("❌ Erreur lors de la copie.");
       });
