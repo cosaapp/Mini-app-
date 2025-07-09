@@ -5,20 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CosaNostraShop</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Colle ici le CSS complet que je t’ai donné précédemment */
+  </style>
 </head>
 <body>
 
   <h1>CosaNostraShop</h1>
   <div class="subtitle">Livraison 7/7 — 14h à 00h</div>
 
-  <!-- Produit 3 : Hash Dry -->
+  <!-- Produit 1 : Hash Dry -->
   <div class="product" data-name="Hash Dry">
     <video autoplay muted loop playsinline>
-      <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
+      <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4" />
     </video>
     <h2>Hash Dry</h2>
-    <p class="description">Dry, no farm, très bon rapport qualité/prix.</p>
+    <p>Description : Dry no farm, très bon rapport qualité prix.</p>
     <div class="stock">Stock disponible</div>
     <label>Quantité :
       <select class="quantity-select">
@@ -37,13 +39,13 @@
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
-  <!-- Produit 5 : Weed OG -->
+  <!-- Produit 2 : Weed OG -->
   <div class="product" data-name="Weed OG">
     <video autoplay muted loop playsinline>
-      <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4">
+      <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4" />
     </video>
     <h2>Weed OG</h2>
-    <p class="description">Flm de faire une description, c’est un message que tu dois mettre.</p>
+    <p>Description : Flm de faire une description, ça tu fais à ton goût.</p>
     <div class="stock">Stock disponible</div>
     <label>Quantité :
       <select class="quantity-select">
@@ -62,10 +64,13 @@
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
-  <!-- Produit 7 : Produit 7 (exemple) -->
-  <div class="product" data-name="Produit 7">
-    <h2>Produit 7</h2>
-    <p class="description">Description du produit 7 à compléter.</p>
+  <!-- Produit 3 : (exemple) -->
+  <div class="product" data-name="Produit 3">
+    <video autoplay muted loop playsinline>
+      <source src="URL_DE_TA_VIDEO_3.mp4" type="video/mp4" />
+    </video>
+    <h2>Produit 3</h2>
+    <p>Description ici...</p>
     <div class="stock">Stock disponible</div>
     <label>Quantité :
       <select class="quantity-select">
@@ -74,15 +79,23 @@
         <option value="3">3g</option>
         <option value="4">4g</option>
         <option value="5">5g</option>
+        <option value="6">6g</option>
+        <option value="7">7g</option>
+        <option value="8">8g</option>
+        <option value="9">9g</option>
+        <option value="10">10g</option>
       </select>
     </label>
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
-  <!-- Produit 8 : Produit 8 (exemple) -->
-  <div class="product" data-name="Produit 8">
-    <h2>Produit 8</h2>
-    <p class="description">Description du produit 8 à compléter.</p>
+  <!-- Produit 5 : (exemple) -->
+  <div class="product" data-name="Produit 5">
+    <video autoplay muted loop playsinline>
+      <source src="URL_DE_TA_VIDEO_5.mp4" type="video/mp4" />
+    </video>
+    <h2>Produit 5</h2>
+    <p>Description ici...</p>
     <div class="stock">Stock disponible</div>
     <label>Quantité :
       <select class="quantity-select">
@@ -91,6 +104,11 @@
         <option value="3">3g</option>
         <option value="4">4g</option>
         <option value="5">5g</option>
+        <option value="6">6g</option>
+        <option value="7">7g</option>
+        <option value="8">8g</option>
+        <option value="9">9g</option>
+        <option value="10">10g</option>
       </select>
     </label>
     <button class="add-btn">Ajouter au panier</button>
@@ -101,7 +119,7 @@
     <h3>🛒 Panier</h3>
     <ul id="cart-items"></ul>
     <div class="cart-total">Total : 0€</div>
-    <button class="copy-btn" onclick="copyCart()">📋 Copier la commande pour Snapchat</button>
+    <button onclick="copyCart()">📋 Copier la commande pour Snapchat</button>
     <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
       <button>Commander sur Snap</button>
     </a>
@@ -109,6 +127,80 @@
 
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
 
-  <script src="script.js"></script>
+  <script>
+    const cartItems = {};
+    const cartList = document.getElementById("cart-items");
+    const cartTotal = document.querySelector(".cart-total");
+
+    function getPrice(name, quantity) {
+      if (name === "Hash Dry") {
+        return quantity <= 5 ? quantity * 6 : quantity * 5;
+      }
+      if (name === "Weed OG") {
+        return Math.ceil((quantity / 10) * 80);
+      }
+      // Prix par défaut pour les autres produits (exemple)
+      return quantity * 7;
+    }
+
+    function updateCart() {
+      cartList.innerHTML = '';
+      let total = 0;
+
+      for (const name in cartItems) {
+        const item = cartItems[name];
+        const itemTotal = getPrice(name, item.quantity);
+        total += itemTotal;
+
+        const li = document.createElement("li");
+        const itemText = document.createElement("span");
+        itemText.className = "item-text";
+        itemText.textContent = `${name} × ${item.quantity}g = ${itemTotal}€`;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "remove-btn";
+        removeBtn.textContent = "🗑️";
+        removeBtn.onclick = () => {
+          item.quantity--;
+          if (item.quantity <= 0) delete cartItems[name];
+          updateCart();
+        };
+
+        li.appendChild(itemText);
+        li.appendChild(removeBtn);
+        cartList.appendChild(li);
+      }
+
+      cartTotal.textContent = `Total : ${total}€`;
+    }
+
+    function copyCart() {
+      let text = "🛒 Commande :\n";
+      for (const name in cartItems) {
+        const item = cartItems[name];
+        const itemTotal = getPrice(name, item.quantity);
+        text += `- ${name} × ${item.quantity}g = ${itemTotal}€\n`;
+      }
+      navigator.clipboard.writeText(text.trim());
+      alert("Commande copiée 📋");
+    }
+
+    document.querySelectorAll(".add-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const product = btn.closest(".product");
+        const name = product.dataset.name;
+        const quantity = parseInt(product.querySelector(".quantity-select").value);
+
+        if (!cartItems[name]) {
+          cartItems[name] = { quantity };
+        } else {
+          cartItems[name].quantity += quantity;
+        }
+
+        updateCart();
+      });
+    });
+  </script>
+
 </body>
 </html>
