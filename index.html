@@ -6,7 +6,209 @@
   <title>CosaNostraShop</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    /* Colle ici le CSS complet que je t’ai donné précédemment */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.05) 0,
+        rgba(255,255,255,0.05) 1px,
+        transparent 1px,
+        transparent 40px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(255,255,255,0.05) 0,
+        rgba(255,255,255,0.05) 1px,
+        transparent 1px,
+        transparent 40px
+      );
+      background-size: 40px 40px;
+    }
+
+    body::before {
+      content: "Cosa Nostra Cosa Nostra Cosa Nostra Cosa Nostra Cosa Nostra";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      font-size: 40px;
+      color: rgba(255,255,255,0.02);
+      transform: rotate(-45deg);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .product {
+      background-color: #111;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 0 auto 30px;
+      max-width: 350px;
+      position: relative;
+      z-index: 1;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+      max-height: 220px;
+      object-fit: cover;
+    }
+
+    .product h2 {
+      margin: 15px 0 5px;
+    }
+
+    .stock {
+      color: #0f0;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .stock::before {
+      content: "✅ ";
+    }
+
+    .product select {
+      padding: 5px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .product button.add-btn {
+      background-color: #0088cc;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .product button.add-btn:hover {
+      background-color: #005f8c;
+      transform: scale(1.05);
+    }
+
+    .cart {
+      background-color: #111;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cart h3 {
+      margin-top: 0;
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    .cart ul li {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+    }
+
+    .remove-btn {
+      background-color: #c00;
+      border: none;
+      color: white;
+      padding: 5px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background-color 0.3s ease;
+    }
+
+    .remove-btn:hover {
+      background-color: #900;
+    }
+
+    .cart-total {
+      font-weight: bold;
+      margin-top: 10px;
+      font-size: 16px;
+      text-align: right;
+    }
+
+    .cart button {
+      background-color: #0a0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    .cart button:hover {
+      background-color: #060;
+    }
+
+    .copy-btn {
+      background-color: #444;
+      margin-top: 10px;
+    }
+
+    .copy-btn:hover {
+      background-color: #666;
+    }
+
+    .close-btn {
+      background-color: #222;
+      margin-top: 30px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background-color: #000;
+    }
   </style>
 </head>
 <body>
@@ -17,190 +219,314 @@
   <!-- Produit 1 : Hash Dry -->
   <div class="product" data-name="Hash Dry">
     <video autoplay muted loop playsinline>
-      <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4" />
-    </video>
-    <h2>Hash Dry</h2>
-    <p>Description : Dry no farm, très bon rapport qualité prix.</p>
-    <div class="stock">Stock disponible</div>
-    <label>Quantité :
-      <select class="quantity-select">
-        <option value="1">1g</option>
-        <option value="2">2g</option>
-        <option value="3">3g</option>
-        <option value="4">4g</option>
-        <option value="5">5g</option>
-        <option value="6">6g</option>
-        <option value="7">7g</option>
-        <option value="8">8g</option>
-        <option value="9">9g</option>
-        <option value="10">10g</option>
-      </select>
-    </label>
-    <button class="add-btn">Ajouter au panier</button>
-  </div>
+      <source src="https
 
-  <!-- Produit 2 : Weed OG -->
-  <div class="product" data-name="Weed OG">
-    <video autoplay muted loop playsinline>
-      <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4" />
-    </video>
-    <h2>Weed OG</h2>
-    <p>Description : Flm de faire une description, ça tu fais à ton goût.</p>
-    <div class="stock">Stock disponible</div>
-    <label>Quantité :
-      <select class="quantity-select">
-        <option value="1">1g</option>
-        <option value="2">2g</option>
-        <option value="3">3g</option>
-        <option value="4">4g</option>
-        <option value="5">5g</option>
-        <option value="6">6g</option>
-        <option value="7">7g</option>
-        <option value="8">8g</option>
-        <option value="9">9g</option>
-        <option value="10">10g</option>
-      </select>
-    </label>
-    <button class="add-btn">Ajouter au panier</button>
-  </div>
+Ok, je te prépare un HTML complet, clair, fonctionnel, avec toutes les fonctionnalités de base (produits, vidéos, panier dynamique, copier commande, bouton fermer Telegram, design correct et animations simples sur boutons).  
+Je vais aussi bien commenter pour que ce soit facile à reprendre.
 
-  <!-- Produit 3 : (exemple) -->
-  <div class="product" data-name="Produit 3">
-    <video autoplay muted loop playsinline>
-      <source src="URL_DE_TA_VIDEO_3.mp4" type="video/mp4" />
-    </video>
-    <h2>Produit 3</h2>
-    <p>Description ici...</p>
-    <div class="stock">Stock disponible</div>
-    <label>Quantité :
-      <select class="quantity-select">
-        <option value="1">1g</option>
-        <option value="2">2g</option>
-        <option value="3">3g</option>
-        <option value="4">4g</option>
-        <option value="5">5g</option>
-        <option value="6">6g</option>
-        <option value="7">7g</option>
-        <option value="8">8g</option>
-        <option value="9">9g</option>
-        <option value="10">10g</option>
-      </select>
-    </label>
-    <button class="add-btn">Ajouter au panier</button>
-  </div>
+---
 
-  <!-- Produit 5 : (exemple) -->
-  <div class="product" data-name="Produit 5">
-    <video autoplay muted loop playsinline>
-      <source src="URL_DE_TA_VIDEO_5.mp4" type="video/mp4" />
-    </video>
-    <h2>Produit 5</h2>
-    <p>Description ici...</p>
-    <div class="stock">Stock disponible</div>
-    <label>Quantité :
-      <select class="quantity-select">
-        <option value="1">1g</option>
-        <option value="2">2g</option>
-        <option value="3">3g</option>
-        <option value="4">4g</option>
-        <option value="5">5g</option>
-        <option value="6">6g</option>
-        <option value="7">7g</option>
-        <option value="8">8g</option>
-        <option value="9">9g</option>
-        <option value="10">10g</option>
-      </select>
-    </label>
-    <button class="add-btn">Ajouter au panier</button>
-  </div>
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CosaNostraShop</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  /* --- Style général --- */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 40px);
+    background-size: 40px 40px;
+  }
+  body::before {
+    content: "Cosa Nostra Cosa Nostra Cosa Nostra Cosa Nostra Cosa Nostra";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    font-size: 40px;
+    color: rgba(255,255,255,0.02);
+    transform: rotate(-45deg);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-  <!-- PANIER -->
-  <div class="cart" id="cart">
-    <h3>🛒 Panier</h3>
-    <ul id="cart-items"></ul>
-    <div class="cart-total">Total : 0€</div>
-    <button onclick="copyCart()">📋 Copier la commande pour Snapchat</button>
-    <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
-      <button>Commander sur Snap</button>
-    </a>
-  </div>
+  h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .subtitle {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 1;
+  }
 
-  <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
+  /* --- Produit --- */
+  .product {
+    background-color: #111;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 0 auto 30px;
+    max-width: 360px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 10px #0a0a0a;
+    transition: transform 0.3s ease;
+  }
+  .product:hover {
+    transform: scale(1.02);
+  }
+  video {
+    width: 100%;
+    max-height: 220px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #222;
+  }
+  .product h2 {
+    margin: 15px 0 8px;
+    font-weight: bold;
+  }
+  .stock {
+    color: #0f0;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .stock::before {
+    content: "✅ ";
+  }
+  label {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  select.quantity-select {
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #222;
+    color: #fff;
+    margin-left: 8px;
+    min-width: 70px;
+  }
+  button.add-btn {
+    background-color: #0088cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  button.add-btn:hover {
+    background-color: #005f8c;
+    transform: scale(1.07);
+  }
 
-  <script>
-    const cartItems = {};
-    const cartList = document.getElementById("cart-items");
-    const cartTotal = document.querySelector(".cart-total");
+  /* --- Panier --- */
+  .cart {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px auto 40px;
+    max-width: 420px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 12px #111;
+  }
+  .cart h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+  ul#cart-items {
+    list-style: none;
+    padding: 0;
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+  }
+  ul#cart-items li {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+  }
+  .remove-btn {
+    background-color: #c00;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  .remove-btn:hover {
+    background-color: #900;
+  }
+  .cart-total {
+    font-weight: bold;
+    font-size: 18px;
+    text-align: right;
+    margin-bottom: 15px;
+  }
+  .cart button {
+    background-color: #0a0;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  .cart button:hover {
+    background-color: #060;
+  }
+  .copy-btn {
+    background-color: #444;
+    margin-bottom: 15px;
+  }
+  .copy-btn:hover {
+    background-color: #666;
+  }
 
-    function getPrice(name, quantity) {
-      if (name === "Hash Dry") {
-        return quantity <= 5 ? quantity * 6 : quantity * 5;
-      }
-      if (name === "Weed OG") {
-        return Math.ceil((quantity / 10) * 80);
-      }
-      // Prix par défaut pour les autres produits (exemple)
-      return quantity * 7;
+  /* --- Bouton fermer Telegram --- */
+  .close-btn {
+    background-color: #222;
+    padding: 14px 0;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+    width: 420px;
+    max-width: 90vw;
+    margin: 0 auto 30px;
+    transition: background-color 0.3s ease;
+  }
+  .close-btn:hover {
+    background-color: #000;
+  }
+</style>
+</head>
+<body>
+
+<h1>CosaNostraShop</h1>
+<div class="subtitle">Livraison 7/7 — 14h à 00h</div>
+
+<!-- Produit 1 : Hash Dry -->
+<div class="product" data-name="Hash Dry">
+  <video autoplay muted loop playsinline>
+    <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4" />
+  </video>
+  <h2>Hash Dry</h2>
+  <div class="stock">Stock disponible</div>
+  <label>Quantité :
+    <select class="quantity-select">
+      <option value="1">1g</option>
+      <option value="2">2g</option>
+      <option value="3">3g</option>
+      <option value="4">4g</option>
+      <option value="5">5g</option>
+      <option value="6">6g</option>
+      <option value="7">7g</option>
+      <option value="8">8g</option>
+      <option value="9">9g</option>
+      <option value="10">10g</option>
+    </select>
+  </label>
+  <button class="add-btn">Ajouter au panier</button>
+</div>
+
+<!-- Produit 2 : Weed OG -->
+<div class="product" data-name="Weed OG">
+  <video autoplay muted loop playsinline>
+    <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4" />
+  </video>
+  <h2>Weed OG</h2>
+  <div class="stock">Stock disponible</div>
+  <label>Quantité :
+    <select class="quantity-select">
+      <option value="1">1g</option>
+      <option value="2">2g</option>
+      <option value="3">3g</option>
+      <option value="4">4g</option>
+      <option value="5">5g</option>
+      <option value="6">6g</option>
+      <option value="7">7g</option>
+      <option value="8">8g</option>
+      <option value="9">9g</option>
+      <option value="10">10g</option>
+    </select>
+  </label>
+  <button class="add-btn">Ajouter au panier</button>
+</div>
+
+<!-- Panier -->
+<div class="cart" id="cart">
+  <h3>🛒 Panier</h3>
+  <ul id="cart-items"></ul>
+  <div class="cart-total">Total : 0€</div>
+  <button class="copy-btn" onclick="copyCart()">📋 Copier la commande pour Snapchat</button>
+  <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank" rel="noopener noreferrer">
+    <button>Commander sur Snap</button>
+  </a>
+</div>
+
+<!-- Bouton fermer Telegram -->
+<button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
+
+<script>
+  // Objet pour stocker les articles ajoutés
+  const cartItems = {};
+
+  // Références DOM
+  const cartList = document.getElementById("cart-items");
+  const cartTotal = document.querySelector(".cart-total");
+
+  // Calcul prix selon produit et quantité
+  function getPrice(name, quantity) {
+    if (name === "Hash Dry") {
+      // 6€/g jusqu'à 5g, 5€/g à partir de 6g
+      if (quantity <= 5) return quantity * 6;
+      else return 5 * 6 + (quantity - 5) * 5;
     }
-
-    function updateCart() {
-      cartList.innerHTML = '';
-      let total = 0;
-
-      for (const name in cartItems) {
-        const item = cartItems[name];
-        const itemTotal = getPrice(name, item.quantity);
-        total += itemTotal;
-
-        const li = document.createElement("li");
-        const itemText = document.createElement("span");
-        itemText.className = "item-text";
-        itemText.textContent = `${name} × ${item.quantity}g = ${itemTotal}€`;
-
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "remove-btn";
-        removeBtn.textContent = "🗑️";
-        removeBtn.onclick = () => {
-          item.quantity--;
-          if (item.quantity <= 0) delete cartItems[name];
-          updateCart();
-        };
-
-        li.appendChild(itemText);
-        li.appendChild(removeBtn);
-        cartList.appendChild(li);
-      }
-
-      cartTotal.textContent = `Total : ${total}€`;
+    if (name === "Weed OG") {
+      // 80€ les 10g => 8€/g
+      return quantity * 8;
     }
+    return 0;
+  }
 
-    function copyCart() {
-      let text = "🛒 Commande :\n";
-      for (const name in cartItems) {
-        const item = cartItems[name];
-        const itemTotal = getPrice(name, item.quantity);
-        text += `- ${name} × ${item.quantity}g = ${itemTotal}€\n`;
-      }
-      navigator.clipboard.writeText(text.trim());
-      alert("Commande copiée 📋");
-    }
+  // Mise à jour affichage du panier
+  function updateCart() {
+    cartList.innerHTML = "";
+    let total = 0;
 
-    document.querySelectorAll(".add-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const product = btn.closest(".product");
-        const name = product.dataset.name;
-        const quantity = parseInt(product.querySelector(".quantity-select").value);
+    for (const name in cartItems) {
+      const item = cartItems[name];
+      const price = getPrice(name, item.quantity);
+      total += price;
 
-        if (!cartItems[name]) {
-          cartItems[name] = { quantity };
-        } else {
-          cartItems[name].quantity += quantity;
-        }
+      const li = document.createElement("li");
 
-        updateCart();
-      });
-    });
-  </script>
-
-</body>
-</html>
+      const itemText
