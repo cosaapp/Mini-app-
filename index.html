@@ -215,15 +215,9 @@
     <div class="stock">Stock disponible</div>
     <label>Quantité :
       <select class="quantity-select">
-        <option value="1">1g</option>
-        <option value="2">2g</option>
-        <option value="3">3g</option>
-        <option value="4">4g</option>
+        <option value="1.66">1.66g</option>
+        <option value="3.33">3.33g</option>
         <option value="5">5g</option>
-        <option value="6">6g</option>
-        <option value="7">7g</option>
-        <option value="8">8g</option>
-        <option value="9">9g</option>
         <option value="10">10g</option>
       </select>
     </label>
@@ -240,15 +234,9 @@
     <div class="stock">Stock disponible</div>
     <label>Quantité :
       <select class="quantity-select">
-        <option value="1">1g</option>
-        <option value="2">2g</option>
-        <option value="3">3g</option>
-        <option value="4">4g</option>
+        <option value="1.25">1.25g</option>
+        <option value="2.5">2.5g</option>
         <option value="5">5g</option>
-        <option value="6">6g</option>
-        <option value="7">7g</option>
-        <option value="8">8g</option>
-        <option value="9">9g</option>
         <option value="10">10g</option>
       </select>
     </label>
@@ -305,7 +293,7 @@
 
         const li = document.createElement("li");
 
-        // Mini-récap avec nom, quantité, prix
+        // Affiche nom, quantité et prix
         li.textContent = `${name} × ${item.quantity}g = ${itemTotal}€`;
 
         // Bouton retirer 1g
@@ -340,7 +328,7 @@
       btn.addEventListener("click", () => {
         const product = btn.closest(".product");
         const name = product.dataset.name;
-        const quantity = parseInt(product.querySelector(".quantity-select").value);
+        const quantity = parseFloat(product.querySelector(".quantity-select").value);
 
         if (!cartItems[name]) {
           cartItems[name] = { quantity };
