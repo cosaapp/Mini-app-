@@ -12,39 +12,52 @@
       color: white;
       padding: 20px;
       text-align: center;
-      overflow-x: hidden;
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.02) 1px,
+        transparent 1px,
+        transparent 30px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.02) 1px,
+        transparent 1px,
+        transparent 30px
+      );
+      background-size: 60px 60px;
+      background-position: 0 0;
     }
 
-    body::after {
-      content: "Cosa Nostra Cosa Nostra Cosa Nostra Cosa Nostra ";
-      font-size: 20px;
-      color: rgba(255,255,255,0.03);
-      white-space: pre;
+    body::before {
+      content: "Cosa Nostra Cosa Nostra Cosa Nostra Cosa Nostra";
       position: fixed;
       top: 0;
       left: 0;
+      width: 200%;
+      height: 200%;
+      font-size: 40px;
+      color: rgba(255, 255, 255, 0.03);
       transform: rotate(-45deg);
-      width: 300%;
-      height: 300%;
       pointer-events: none;
+      white-space: pre;
       z-index: 0;
-      line-height: 60px;
-    }
-
-    body > * {
-      position: relative;
-      z-index: 1;
     }
 
     h1 {
       font-size: 26px;
       margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
     }
 
     .subtitle {
       font-size: 16px;
       color: #ccc;
       margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     .product {
@@ -54,6 +67,8 @@
       padding: 20px;
       margin: 0 auto 30px;
       max-width: 350px;
+      position: relative;
+      z-index: 1;
     }
 
     video {
@@ -80,13 +95,6 @@
       content: "✅ ";
     }
 
-    .product select {
-      margin-top: 10px;
-      padding: 6px;
-      font-size: 15px;
-      border-radius: 5px;
-    }
-
     .product button.add-btn {
       background-color: #0088cc;
       color: white;
@@ -111,6 +119,8 @@
       max-width: 400px;
       margin-left: auto;
       margin-right: auto;
+      position: relative;
+      z-index: 1;
     }
 
     .cart h3 {
@@ -152,7 +162,8 @@
       font-size: 16px;
     }
 
-    .cart a button {
+    .cart a button,
+    .copy-btn {
       background-color: #0a0;
       color: white;
       border: none;
@@ -164,14 +175,11 @@
     }
 
     .copy-btn {
-      background-color: #555;
-      margin-top: 10px;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-size: 15px;
-      color: white;
-      border: none;
-      cursor: pointer;
+      background-color: #444;
+    }
+
+    .copy-btn:hover {
+      background-color: #222;
     }
 
     button.close-btn {
@@ -192,40 +200,24 @@
   <h1>CosaNostraShop</h1>
   <div class="subtitle">Livraison 7/7 — 14h à 00h</div>
 
-  <!-- PRODUIT HASH -->
-  <div class="product" data-name="Hash Dry">
-    <video controls>
+  <!-- PRODUITS -->
+  <div class="product" data-name="Hash Dry" data-price="5">
+    <video autoplay muted loop playsinline>
       <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
     </video>
     <h2>Hash Dry</h2>
-    <p>6€/g jusqu’à 5g, 5€/g au-delà</p>
+    <p>Prix : 5€ le gramme</p>
     <div class="stock">Stock disponible</div>
-    <select>
-      <option value="1">1g</option>
-      <option value="2">2g</option>
-      <option value="3">3g</option>
-      <option value="4">4g</option>
-      <option value="5">5g</option>
-      <option value="6">6g</option>
-      <option value="10">10g</option>
-    </select>
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
-  <!-- PRODUIT WEED -->
-  <div class="product" data-name="Weed OG">
-    <video controls>
+  <div class="product" data-name="Weed OG" data-price="8">
+    <video autoplay muted loop playsinline>
       <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4">
     </video>
     <h2>Weed OG</h2>
-    <p>8€/g ou 10g = 80€</p>
+    <p>Prix : 8€ le gramme</p>
     <div class="stock">Stock disponible</div>
-    <select>
-      <option value="1">1g</option>
-      <option value="2">2g</option>
-      <option value="5">5g</option>
-      <option value="10">10g</option>
-    </select>
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
@@ -234,10 +226,10 @@
     <h3>🛒 Panier</h3>
     <ul id="cart-items"></ul>
     <div class="cart-total">Total : 0€</div>
-    <button class="copy-btn" onclick="copyCart()">📋 Copier la commande pour Snapchat</button>
     <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
       <button>Commander sur Snap</button>
     </a>
+    <button class="copy-btn" onclick="copyToClipboard()">📋 Copie de commande pour Snapchat</button>
   </div>
 
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
@@ -253,13 +245,12 @@
 
       for (const name in cartItems) {
         const item = cartItems[name];
-        total += item.totalPrice;
+        total += item.price * item.quantity;
 
         const li = document.createElement("li");
-
         const itemText = document.createElement("span");
         itemText.className = "item-text";
-        itemText.textContent = `${item.name} × ${item.quantity}g = ${item.totalPrice}€`;
+        itemText.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
 
         const removeBtn = document.createElement("button");
         removeBtn.className = "remove-btn";
@@ -269,10 +260,7 @@
             item.quantity--;
           } else {
             delete cartItems[name];
-            updateCart();
-            return;
           }
-          item.totalPrice = calculatePrice(item.name, item.quantity);
           updateCart();
         });
 
@@ -284,47 +272,33 @@
       cartTotal.textContent = `Total : ${total}€`;
     }
 
-    function calculatePrice(name, quantity) {
-      if (name === "Hash Dry") {
-        return quantity <= 5 ? quantity * 6 : quantity * 5;
-      } else if (name === "Weed OG") {
-        return quantity === 10 ? 80 : quantity * 8;
-      }
-      return 0;
-    }
-
     document.querySelectorAll('.add-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const product = btn.closest('.product');
         const name = product.dataset.name;
-        const quantity = parseInt(product.querySelector("select").value);
+        const price = parseFloat(product.dataset.price);
 
         if (!cartItems[name]) {
-          cartItems[name] = { name, quantity };
+          cartItems[name] = { name, price, quantity: 1 };
         } else {
-          cartItems[name].quantity += quantity;
+          cartItems[name].quantity += 1;
         }
 
-        cartItems[name].totalPrice = calculatePrice(name, cartItems[name].quantity);
         updateCart();
       });
     });
 
-    function copyCart() {
-      let text = '🛒 Ma commande :\n';
-      let total = 0;
-
+    function copyToClipboard() {
+      let message = "🛒 Commande :\n";
       for (const name in cartItems) {
         const item = cartItems[name];
-        text += `• ${item.name} × ${item.quantity}g = ${item.totalPrice}€\n`;
-        total += item.totalPrice;
+        message += `- ${item.name} × ${item.quantity} = ${item.price * item.quantity}€\n`;
       }
+      message += cartTotal.textContent;
 
-      text += `\n💶 Total : ${total}€`;
-
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Commande copiée pour Snapchat !");
-      });
+      navigator.clipboard.writeText(message)
+        .then(() => alert("Commande copiée pour Snapchat !"))
+        .catch(() => alert("Erreur lors de la copie."));
     }
   </script>
 
