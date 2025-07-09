@@ -67,6 +67,7 @@
       max-width: 350px;
       position: relative;
       z-index: 1;
+      overflow: hidden;
     }
 
     video {
@@ -81,8 +82,7 @@
     .description {
       font-size: 14px;
       color: #aaa;
-      margin-bottom: 15px;
-      min-height: 40px;
+      margin-bottom: 10px;
     }
 
     .stock {
@@ -93,6 +93,13 @@
 
     .stock::before {
       content: "✅ ";
+    }
+
+    .price-display {
+      font-weight: bold;
+      margin-top: 5px;
+      font-size: 14px;
+      color: #0af;
     }
 
     .product select {
@@ -108,12 +115,24 @@
       border-radius: 5px;
       font-size: 15px;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    .add-btn:hover {
-      background-color: #005f8a;
-      transform: scale(1.05);
+    /* Animation pour le bouton add */
+    .add-btn.animate {
+      animation: pulse 0.5s ease;
+    }
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(0, 136, 204, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 10px 10px rgba(0, 136, 204, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(0, 136, 204, 0);
+      }
     }
 
     .cart {
@@ -129,9 +148,15 @@
       text-align: left;
     }
 
+    .cart h3 {
+      text-align: center;
+    }
+
     .cart ul {
       list-style: none;
       padding: 0;
+      max-height: 200px;
+      overflow-y: auto;
     }
 
     .cart ul li {
@@ -150,17 +175,22 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: 13px;
-      margin-left: 10px;
     }
 
     .cart-total {
       font-weight: bold;
       margin-top: 10px;
       font-size: 16px;
-      text-align: right;
     }
 
-    .cart button {
+    .cart-weight {
+      font-weight: normal;
+      margin-top: 5px;
+      font-size: 14px;
+      color: #6f6;
+    }
+
+    .cart button, .copy-btn {
       background-color: #0a0;
       color: white;
       border: none;
@@ -175,7 +205,7 @@
     .copy-btn {
       background-color: #444;
       margin-top: 10px;
-      width: 100%;
+      width: auto;
     }
 
     .copy-btn:hover {
@@ -189,14 +219,53 @@
       border-radius: 5px;
       cursor: pointer;
       width: 100%;
-      font-size: 16px;
-      color: white;
-      border: none;
-      transition: background-color 0.3s ease;
     }
 
     .close-btn:hover {
       background-color: #000;
+    }
+
+    /* Historique commandes */
+    #history {
+      background-color: #111;
+      max-width: 400px;
+      margin: 30px auto 0;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: left;
+      color: #ccc;
+      font-size: 14px;
+      z-index: 1;
+      position: relative;
+    }
+
+    #history h4 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    #history ul {
+      list-style: none;
+      padding: 0;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    #history ul li {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .load-order-btn {
+      background-color: #0088cc;
+      border: none;
+      padding: 4px 8px;
+      font-size: 13px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
     }
   </style>
 </head>
@@ -227,6 +296,7 @@
         <option value="10">10g</option>
       </select>
     </label>
+    <div class="price-display"></div>
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
@@ -236,7 +306,7 @@
       <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4" />
     </video>
     <h2>Weed OG</h2>
-    <div class="description">Flm de faire une description, ça tu fais à ton goût.</div>
+    <div class="description">FLM de faire une description, ça tu fais à ton goût.</div>
     <div class="stock">Stock disponible</div>
     <label>Quantité :
       <select class="quantity-select">
@@ -252,6 +322,7 @@
         <option value="10">10g</option>
       </select>
     </label>
+    <div class="price-display"></div>
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
@@ -260,10 +331,17 @@
     <h3>🛒 Panier</h3>
     <ul id="cart-items"></ul>
     <div class="cart-total">Total : 0€</div>
+    <div class="cart-weight">Poids total : 0g</div>
     <button class="copy-btn" onclick="copyCart()">📋 Copier la commande pour Snapchat</button>
     <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank" rel="noopener noreferrer">
       <button>Commander sur Snap</button>
     </a>
+  </div>
+
+  <!-- Historique commandes -->
+  <div id="history">
+    <h4>Historique des commandes</h4>
+    <ul id="history-list"></ul>
   </div>
 
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
@@ -272,35 +350,48 @@
     const cartItems = {};
     const cartList = document.getElementById("cart-items");
     const cartTotal = document.querySelector(".cart-total");
+    const cartWeight = document.querySelector(".cart-weight");
+    const historyList = document.getElementById("history-list");
+    const addButtons = document.querySelectorAll(".add-btn");
 
+    // Prix selon produit et quantité
     function getPrice(name, quantity) {
       if (name === "Hash Dry") {
-        // Jusqu’à 5g à 6€/g, puis 5€/g au-delà
-        if (quantity <= 5) return quantity * 6;
-        else return 5 * 6 + (quantity - 5) * 5;
+        return quantity <= 5 ? quantity * 6 : quantity * 5;
       }
       if (name === "Weed OG") {
-        // 80€ les 10g, donc 8€/g fixe
-        return Math.ceil(quantity * 8);
+        return Math.ceil((quantity / 10) * 80);
       }
       return 0;
     }
 
+    // Met à jour le prix affiché à côté de la quantité
+    function updatePriceDisplay(productElem) {
+      const name = productElem.dataset.name;
+      const quantitySelect = productElem.querySelector(".quantity-select");
+      const priceDisplay = productElem.querySelector(".price-display");
+      const quantity = parseInt(quantitySelect.value);
+      const price = getPrice(name, quantity);
+      priceDisplay.textContent = `Prix : ${price}€`;
+    }
+
+    // Met à jour le panier visuellement
     function updateCart() {
       cartList.innerHTML = '';
       let total = 0;
+      let totalWeight = 0;
 
       for (const name in cartItems) {
         const item = cartItems[name];
         const itemTotal = getPrice(name, item.quantity);
         total += itemTotal;
+        totalWeight += item.quantity;
 
         const li = document.createElement("li");
+        const itemText = document.createElement("span");
+        itemText.className = "item-text";
+        itemText.textContent = `${name} × ${item.quantity}g = ${itemTotal}€`;
 
-        // Mini-récap avec nom, quantité, prix
-        li.textContent = `${name} × ${item.quantity}g = ${itemTotal}€`;
-
-        // Bouton retirer 1g
         const removeBtn = document.createElement("button");
         removeBtn.className = "remove-btn";
         removeBtn.textContent = "🗑️";
@@ -308,16 +399,27 @@
           item.quantity--;
           if (item.quantity <= 0) delete cartItems[name];
           updateCart();
+          saveHistory();
         };
 
+        li.appendChild(itemText);
         li.appendChild(removeBtn);
         cartList.appendChild(li);
       }
 
       cartTotal.textContent = `Total : ${total}€`;
+      cartWeight.textContent = `Poids total : ${totalWeight}g`;
+
+      saveHistory();
+      renderHistory();
     }
 
+    // Copier la commande dans le presse-papier
     function copyCart() {
+      if (Object.keys(cartItems).length === 0) {
+        alert("Le panier est vide !");
+        return;
+      }
       let text = "🛒 Commande :\n";
       for (const name in cartItems) {
         const item = cartItems[name];
@@ -328,11 +430,77 @@
       alert("Commande copiée 📋");
     }
 
-    document.querySelectorAll(".add-btn").forEach(btn => {
+    // Enregistre la commande dans le localStorage
+    function saveHistory() {
+      const history = JSON.parse(localStorage.getItem("orderHistory") || "[]");
+      // On ajoute la commande actuelle
+      const currentOrder = {
+        timestamp: Date.now(),
+        items: JSON.parse(JSON.stringify(cartItems)) // clone objet
+      };
+      // On évite les doublons identiques
+      if (history.length === 0 || JSON.stringify(history[history.length - 1].items) !== JSON.stringify(currentOrder.items)) {
+        history.push(currentOrder);
+        // Limite l'historique à 10 commandes
+        if (history.length > 10) history.shift();
+        localStorage.setItem("orderHistory", JSON.stringify(history));
+      }
+    }
+
+    // Affiche l'historique des commandes
+    function renderHistory() {
+      const history = JSON.parse(localStorage.getItem("orderHistory") || "[]");
+      historyList.innerHTML = '';
+      if(history.length === 0) {
+        const li = document.createElement("li");
+        li.textContent = "Aucune commande enregistrée.";
+        historyList.appendChild(li);
+        return;
+      }
+
+      history.forEach((order, index) => {
+        const li = document.createElement("li");
+        const date = new Date(order.timestamp);
+        li.textContent = date.toLocaleString();
+        const loadBtn = document.createElement("button");
+        loadBtn.textContent = "Recharger";
+        loadBtn.className = "load-order-btn";
+        loadBtn.onclick = () => {
+          // Recharge la commande
+          Object.keys(cartItems).forEach(key => delete cartItems[key]);
+          Object.assign(cartItems, order.items);
+          updateCart();
+          alert("Commande rechargée !");
+        };
+        li.appendChild(loadBtn);
+        historyList.appendChild(li);
+      });
+    }
+
+    // Animation bouton ajouter au panier
+    function animateButton(btn) {
+      btn.classList.add("animate");
+      setTimeout(() => {
+        btn.classList.remove("animate");
+      }, 500);
+    }
+
+    // Initialisation : gestion clic ajouter + affichage prix dynamique
+    addButtons.forEach(btn => {
+      const productElem = btn.closest(".product");
+      const quantitySelect = productElem.querySelector(".quantity-select");
+
+      // Prix dynamique à l'ouverture
+      updatePriceDisplay(productElem);
+
+      // Au changement de quantité, mise à jour prix affiché
+      quantitySelect.addEventListener("change", () => {
+        updatePriceDisplay(productElem);
+      });
+
       btn.addEventListener("click", () => {
-        const product = btn.closest(".product");
-        const name = product.dataset.name;
-        const quantity = parseInt(product.querySelector(".quantity-select").value);
+        const name = productElem.dataset.name;
+        const quantity = parseInt(quantitySelect.value);
 
         if (!cartItems[name]) {
           cartItems[name] = { quantity };
@@ -341,11 +509,10 @@
         }
 
         updateCart();
+        animateButton(btn);
       });
     });
 
-    updateCart();
-  </script>
-
-</body>
-</html>
+    // Afficher l'historique au chargement
+    renderHistory();
+  </
