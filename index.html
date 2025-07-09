@@ -15,81 +15,47 @@
     }
 
     h1 {
-      color: white;
-      margin-bottom: 10px;
       font-size: 26px;
+      margin-bottom: 10px;
     }
 
     .subtitle {
-      color: #ccc;
       font-size: 16px;
+      color: #ccc;
       margin-bottom: 20px;
     }
 
     .dropdown {
-      position: relative;
-      display: inline-block;
       margin-bottom: 30px;
     }
 
     .dropbtn {
       background-color: transparent;
-      color: white;
       border: 2px solid white;
+      color: white;
       padding: 10px 20px;
       font-size: 16px;
-      cursor: pointer;
       border-radius: 5px;
-      min-width: 130px;
-      text-align: left;
-      user-select: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .dropbtn:focus {
-      outline: none;
-      box-shadow: 0 0 5px #0088cc;
-    }
-
-    .dropbtn::after {
-      content: '▼';
-      font-size: 12px;
-      margin-left: 10px;
-      opacity: 0.7;
+      cursor: pointer;
     }
 
     .dropdown-content {
       display: none;
       position: absolute;
       background-color: #111;
-      min-width: 130px;
       border: 1px solid #555;
       border-radius: 5px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
-      z-index: 1;
-      left: 0;
       margin-top: 5px;
-      text-align: left;
+      z-index: 1;
     }
 
     .dropdown-content button {
-      background-color: transparent;
-      color: white;
+      background: none;
       border: none;
-      padding: 10px 15px;
-      width: 100%;
-      text-align: left;
-      font-size: 15px;
-      cursor: pointer;
-      border-radius: 0;
-      transition: background-color 0.3s ease;
-    }
-
-    .dropdown-content button:hover {
-      background-color: #0088cc;
       color: white;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
     }
 
     .product {
@@ -99,7 +65,6 @@
       padding: 20px;
       margin: 0 auto 30px;
       max-width: 350px;
-      display: none; /* masqué par défaut */
     }
 
     video {
@@ -109,51 +74,86 @@
 
     .product h2 {
       margin: 15px 0 5px;
-      color: white;
     }
 
     .product p {
       font-size: 16px;
-      color: #ccc;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     .stock {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: #0f0;
       font-size: 14px;
       margin-bottom: 10px;
-      font-weight: bold;
     }
 
     .stock::before {
-      content: "✅";
-      margin-right: 6px;
+      content: "✅ ";
+    }
+
+    .product button.add-btn {
+      background-color: #0088cc;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .product button.add-btn:hover {
+      background-color: #006699;
+    }
+
+    .cart {
+      background-color: #111;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.6);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cart h3 {
+      margin-bottom: 10px;
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .cart ul li {
+      margin-bottom: 5px;
+      font-size: 15px;
+    }
+
+    .cart-total {
+      font-weight: bold;
+      margin-top: 10px;
       font-size: 16px;
     }
 
-    .product button {
-      background-color: #0088cc;
+    .cart a button {
+      background-color: #0a0;
       color: white;
       border: none;
       padding: 10px 20px;
       border-radius: 5px;
+      margin-top: 10px;
       font-size: 15px;
       cursor: pointer;
     }
 
-    .product button:hover {
-      background-color: #006699;
-    }
-
     button.close-btn {
       background-color: #444;
-      margin-top: 20px;
+      margin-top: 30px;
       padding: 10px 20px;
       border-radius: 5px;
-      font-size: 15px;
       cursor: pointer;
     }
 
@@ -167,81 +167,72 @@
   <h1>CosaNostraShop</h1>
   <div class="subtitle">Livraison 7/7 — 14h à 00h</div>
 
-  <div class="dropdown">
-    <button class="dropbtn" id="categoryBtn">Catégories</button>
-    <div class="dropdown-content" id="dropdownMenu">
-      <button data-category="all">Tous</button>
-      <button data-category="weed">Weed</button>
-      <button data-category="hash">Hash</button>
-    </div>
-  </div>
+  <!-- PRODUITS -->
 
-  <!-- Produit 1 : Hash Dry -->
-  <div class="product" data-category="hash">
+  <div class="product" data-name="Hash Dry" data-price="5">
     <video controls>
       <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
-      Votre navigateur ne supporte pas la lecture de vidéo.
     </video>
     <h2>Hash Dry</h2>
     <p>Prix : 5€ le gramme</p>
     <div class="stock">Stock disponible</div>
-    <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank" rel="noopener">
-      <button>Commander</button>
-    </a>
+    <button class="add-btn">Ajouter au panier</button>
   </div>
 
-  <!-- Produit 2 : Weed -->
-  <div class="product" data-category="weed">
+  <div class="product" data-name="Weed OG" data-price="8">
     <video controls>
       <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4">
-      Votre navigateur ne supporte pas la lecture de vidéo.
     </video>
-    <h2>Weed</h2>
+    <h2>Weed OG</h2>
     <p>Prix : 8€ le gramme</p>
     <div class="stock">Stock disponible</div>
-    <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank" rel="noopener">
-      <button>Commander</button>
+    <button class="add-btn">Ajouter au panier</button>
+  </div>
+
+  <!-- PANIER -->
+  <div class="cart" id="cart">
+    <h3>🛒 Panier</h3>
+    <ul id="cart-items"></ul>
+    <div class="cart-total">Total : 0€</div>
+    <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
+      <button>Commander sur Snap</button>
     </a>
   </div>
 
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
 
   <script>
-    const categoryBtn = document.getElementById('categoryBtn');
-    const dropdownMenu = document.getElementById('dropdownMenu');
-    const products = document.querySelectorAll('.product');
+    const cartItems = {};
+    const cartList = document.getElementById("cart-items");
+    const cartTotal = document.querySelector(".cart-total");
 
-    function showProducts(category) {
-      products.forEach(product => {
-        if (category === 'all' || product.dataset.category === category) {
-          product.style.display = 'block';
-        } else {
-          product.style.display = 'none';
-        }
-      });
+    function updateCart() {
+      cartList.innerHTML = '';
+      let total = 0;
+      for (const name in cartItems) {
+        const item = cartItems[name];
+        total += item.price * item.quantity;
+        const li = document.createElement("li");
+        li.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
+        cartList.appendChild(li);
+      }
+      cartTotal.textContent = `Total : ${total}€`;
     }
 
-    // Par défaut, tout est affiché
-    showProducts('all');
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const product = btn.closest('.product');
+        const name = product.dataset.name;
+        const price = parseFloat(product.dataset.price);
 
-    categoryBtn.addEventListener('click', () => {
-      const isVisible = dropdownMenu.style.display === 'block';
-      dropdownMenu.style.display = isVisible ? 'none' : 'block';
-    });
+        if (!cartItems[name]) {
+          cartItems[name] = { name, price, quantity: 1 };
+        } else {
+          cartItems[name].quantity += 1;
+        }
 
-    dropdownMenu.querySelectorAll('button').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const selectedCategory = e.target.getAttribute('data-category');
-        showProducts(selectedCategory);
-        categoryBtn.textContent = btn.textContent + " ▼";
-        dropdownMenu.style.display = 'none';
+        updateCart();
       });
-    });
-
-    window.addEventListener('click', (e) => {
-      if (!categoryBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
-        dropdownMenu.style.display = 'none';
-      }
     });
   </script>
 
