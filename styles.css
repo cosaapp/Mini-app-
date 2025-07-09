@@ -19,7 +19,6 @@ body {
     transparent 40px
   );
   background-size: 40px 40px;
-  position: relative;
 }
 
 body::before {
@@ -64,17 +63,15 @@ h1 {
 
 video {
   width: 100%;
+  max-width: 350px; /* taille max pour que la vidéo reste dans le bloc */
+  height: auto; /* garder les proportions */
   border-radius: 8px;
+  display: block;
+  margin: 0 auto; /* centrer la vidéo */
 }
 
 .product h2 {
   margin: 15px 0 5px;
-}
-
-.product .description {
-  font-size: 14px;
-  color: #bbb;
-  margin-bottom: 10px;
 }
 
 .stock {
@@ -104,7 +101,7 @@ video {
 }
 
 .product button.add-btn:hover {
-  background-color: #005f88;
+  background-color: #005f7f;
   transform: scale(1.05);
 }
 
@@ -123,7 +120,6 @@ video {
 .cart ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .cart ul li {
@@ -146,7 +142,7 @@ video {
 }
 
 .remove-btn:hover {
-  background-color: #a00;
+  background-color: #900;
 }
 
 .cart-total {
@@ -168,7 +164,7 @@ video {
 }
 
 .cart button:hover {
-  background-color: #060;
+  background-color: #070;
 }
 
 .copy-btn {
