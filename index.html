@@ -58,17 +58,6 @@
       content: "✅ ";
     }
 
-    .quantity-input {
-      width: 60px;
-      padding: 5px;
-      margin: 5px 0;
-      border-radius: 5px;
-      border: 1px solid #666;
-      background-color: #000;
-      color: white;
-      text-align: center;
-    }
-
     .product button.add-btn {
       background-color: #0088cc;
       color: white;
@@ -134,7 +123,8 @@
       font-size: 16px;
     }
 
-    .cart a button {
+    .cart a button,
+    #copy-btn {
       background-color: #0a0;
       color: white;
       border: none;
@@ -163,27 +153,24 @@
   <h1>CosaNostraShop</h1>
   <div class="subtitle">Livraison 7/7 — 14h à 00h</div>
 
-  <!-- PRODUIT : Hash Dry -->
-  <div class="product" data-name="Hash Dry">
+  <!-- PRODUITS -->
+  <div class="product" data-name="Hash Dry" data-price="5">
     <video controls>
       <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
     </video>
     <h2>Hash Dry</h2>
-    <p>6€/g jusqu’à 5g — puis 5€/g</p>
+    <p>Prix : 5€ le gramme</p>
     <div class="stock">Stock disponible</div>
-    <input class="quantity-input" type="number" min="1" value="1" />
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
-  <!-- PRODUIT : Weed OG -->
-  <div class="product" data-name="Weed OG">
+  <div class="product" data-name="Weed OG" data-price="8">
     <video controls>
       <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4">
     </video>
     <h2>Weed OG</h2>
-    <p>8€/g — 10g = 80€</p>
+    <p>Prix : 8€ le gramme</p>
     <div class="stock">Stock disponible</div>
-    <input class="quantity-input" type="number" min="1" value="1" />
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
@@ -195,6 +182,7 @@
     <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
       <button>Commander sur Snap</button>
     </a>
+    <button id="copy-btn">📋 Copier le panier</button>
   </div>
 
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
@@ -203,6 +191,7 @@
     const cartItems = {};
     const cartList = document.getElementById("cart-items");
     const cartTotal = document.querySelector(".cart-total");
+    const copyBtn = document.getElementById("copy-btn");
 
     function updateCart() {
       cartList.innerHTML = '';
@@ -210,19 +199,23 @@
 
       for (const name in cartItems) {
         const item = cartItems[name];
-        total += item.total;
+        total += item.price * item.quantity;
 
         const li = document.createElement("li");
-
+        
         const itemText = document.createElement("span");
         itemText.className = "item-text";
-        itemText.textContent = `${item.name} × ${item.quantity}g = ${item.total}€`;
+        itemText.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
 
         const removeBtn = document.createElement("button");
         removeBtn.className = "remove-btn";
         removeBtn.textContent = "🗑️";
         removeBtn.addEventListener("click", () => {
-          delete cartItems[name];
+          if (item.quantity > 1) {
+            item.quantity--;
+          } else {
+            delete cartItems[name];
+          }
           updateCart();
         });
 
@@ -238,25 +231,39 @@
       btn.addEventListener('click', () => {
         const product = btn.closest('.product');
         const name = product.dataset.name;
-        const quantity = parseInt(product.querySelector('.quantity-input').value);
+        const price = parseFloat(product.dataset.price);
 
-        if (isNaN(quantity) || quantity <= 0) return;
-
-        let totalPrice = 0;
-
-        if (name === 'Hash Dry') {
-          totalPrice = quantity <= 5 ? quantity * 6 : quantity * 5;
-        } else if (name === 'Weed OG') {
-          totalPrice = quantity === 10 ? 80 : quantity * 8;
+        if (!cartItems[name]) {
+          cartItems[name] = { name, price, quantity: 1 };
+        } else {
+          cartItems[name].quantity += 1;
         }
 
-        cartItems[name] = {
-          name: name,
-          quantity: quantity,
-          total: totalPrice
-        };
-
         updateCart();
+      });
+    });
+
+    copyBtn.addEventListener('click', () => {
+      if (Object.keys(cartItems).length === 0) {
+        alert("Le panier est vide !");
+        return;
+      }
+
+      let text = "🛒 Commande CosaNostraShop:\n";
+      let total = 0;
+
+      for (const name in cartItems) {
+        const item = cartItems[name];
+        text += `- ${item.name} × ${item.quantity} = ${item.price * item.quantity}€\n`;
+        total += item.price * item.quantity;
+      }
+
+      text += `\n💶 Total : ${total}€`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("✅ Panier copié !");
+      }).catch(() => {
+        alert("❌ Erreur lors de la copie.");
       });
     });
   </script>
