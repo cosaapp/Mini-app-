@@ -12,22 +12,22 @@
       color: white;
       padding: 20px;
       text-align: center;
+      overflow-x: hidden;
     }
 
-    /* ✅ Motif "Cosa Nostra" en fond diagonal */
-    body::before {
+    body::after {
       content: "Cosa Nostra Cosa Nostra Cosa Nostra Cosa Nostra ";
+      font-size: 20px;
+      color: rgba(255,255,255,0.03);
+      white-space: pre;
       position: fixed;
       top: 0;
       left: 0;
+      transform: rotate(-45deg);
       width: 300%;
       height: 300%;
-      font-size: 20px;
-      color: rgba(255, 255, 255, 0.03);
-      transform: rotate(-45deg);
-      white-space: pre;
-      z-index: 0;
       pointer-events: none;
+      z-index: 0;
       line-height: 60px;
     }
 
@@ -78,6 +78,13 @@
 
     .stock::before {
       content: "✅ ";
+    }
+
+    .product select {
+      margin-top: 10px;
+      padding: 6px;
+      font-size: 15px;
+      border-radius: 5px;
     }
 
     .product button.add-btn {
@@ -157,13 +164,13 @@
     }
 
     .copy-btn {
-      background-color: #444;
+      background-color: #555;
+      margin-top: 10px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 15px;
       color: white;
       border: none;
-      padding: 8px 16px;
-      border-radius: 5px;
-      font-size: 14px;
-      margin-top: 10px;
       cursor: pointer;
     }
 
@@ -185,24 +192,40 @@
   <h1>CosaNostraShop</h1>
   <div class="subtitle">Livraison 7/7 — 14h à 00h</div>
 
-  <!-- PRODUITS -->
-  <div class="product" data-name="Hash Dry" data-price="5">
+  <!-- PRODUIT HASH -->
+  <div class="product" data-name="Hash Dry">
     <video controls>
       <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
     </video>
     <h2>Hash Dry</h2>
-    <p>Prix : 5€ le gramme</p>
+    <p>6€/g jusqu’à 5g, 5€/g au-delà</p>
     <div class="stock">Stock disponible</div>
+    <select>
+      <option value="1">1g</option>
+      <option value="2">2g</option>
+      <option value="3">3g</option>
+      <option value="4">4g</option>
+      <option value="5">5g</option>
+      <option value="6">6g</option>
+      <option value="10">10g</option>
+    </select>
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
-  <div class="product" data-name="Weed OG" data-price="8">
+  <!-- PRODUIT WEED -->
+  <div class="product" data-name="Weed OG">
     <video controls>
       <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4">
     </video>
     <h2>Weed OG</h2>
-    <p>Prix : 8€ le gramme</p>
+    <p>8€/g ou 10g = 80€</p>
     <div class="stock">Stock disponible</div>
+    <select>
+      <option value="1">1g</option>
+      <option value="2">2g</option>
+      <option value="5">5g</option>
+      <option value="10">10g</option>
+    </select>
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
@@ -211,10 +234,10 @@
     <h3>🛒 Panier</h3>
     <ul id="cart-items"></ul>
     <div class="cart-total">Total : 0€</div>
+    <button class="copy-btn" onclick="copyCart()">📋 Copier la commande pour Snapchat</button>
     <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
       <button>Commander sur Snap</button>
     </a>
-    <button class="copy-btn" onclick="copyCart()">📋 Copier la commande pour Snapchat</button>
   </div>
 
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
@@ -230,12 +253,13 @@
 
       for (const name in cartItems) {
         const item = cartItems[name];
-        total += item.price * item.quantity;
+        total += item.totalPrice;
 
         const li = document.createElement("li");
+
         const itemText = document.createElement("span");
         itemText.className = "item-text";
-        itemText.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
+        itemText.textContent = `${item.name} × ${item.quantity}g = ${item.totalPrice}€`;
 
         const removeBtn = document.createElement("button");
         removeBtn.className = "remove-btn";
@@ -245,7 +269,10 @@
             item.quantity--;
           } else {
             delete cartItems[name];
+            updateCart();
+            return;
           }
+          item.totalPrice = calculatePrice(item.name, item.quantity);
           updateCart();
         });
 
@@ -257,37 +284,46 @@
       cartTotal.textContent = `Total : ${total}€`;
     }
 
+    function calculatePrice(name, quantity) {
+      if (name === "Hash Dry") {
+        return quantity <= 5 ? quantity * 6 : quantity * 5;
+      } else if (name === "Weed OG") {
+        return quantity === 10 ? 80 : quantity * 8;
+      }
+      return 0;
+    }
+
     document.querySelectorAll('.add-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const product = btn.closest('.product');
         const name = product.dataset.name;
-        const price = parseFloat(product.dataset.price);
+        const quantity = parseInt(product.querySelector("select").value);
 
         if (!cartItems[name]) {
-          cartItems[name] = { name, price, quantity: 1 };
+          cartItems[name] = { name, quantity };
         } else {
-          cartItems[name].quantity += 1;
+          cartItems[name].quantity += quantity;
         }
 
+        cartItems[name].totalPrice = calculatePrice(name, cartItems[name].quantity);
         updateCart();
       });
     });
 
     function copyCart() {
-      let content = "🛒 Commande Cosa Nostra:\n";
+      let text = '🛒 Ma commande :\n';
       let total = 0;
 
       for (const name in cartItems) {
         const item = cartItems[name];
-        const line = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
-        content += "• " + line + "\n";
-        total += item.price * item.quantity;
+        text += `• ${item.name} × ${item.quantity}g = ${item.totalPrice}€\n`;
+        total += item.totalPrice;
       }
 
-      content += `\n💶 Total : ${total}€`;
+      text += `\n💶 Total : ${total}€`;
 
-      navigator.clipboard.writeText(content).then(() => {
-        alert("Commande copiée ✅ Tu peux la coller dans Snapchat !");
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Commande copiée pour Snapchat !");
       });
     }
   </script>
