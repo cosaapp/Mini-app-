@@ -25,39 +25,6 @@
       margin-bottom: 20px;
     }
 
-    .dropdown {
-      margin-bottom: 30px;
-    }
-
-    .dropbtn {
-      background-color: transparent;
-      border: 2px solid white;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #111;
-      border: 1px solid #555;
-      border-radius: 5px;
-      margin-top: 5px;
-      z-index: 1;
-    }
-
-    .dropdown-content button {
-      background: none;
-      border: none;
-      color: white;
-      padding: 10px;
-      text-align: left;
-      cursor: pointer;
-    }
-
     .product {
       background-color: #111;
       border-radius: 10px;
@@ -128,8 +95,26 @@
     }
 
     .cart ul li {
-      margin-bottom: 5px;
+      margin-bottom: 8px;
       font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart ul li .item-text {
+      flex-grow: 1;
+      text-align: left;
+    }
+
+    .remove-btn {
+      background-color: #c00;
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
     }
 
     .cart-total {
@@ -168,7 +153,6 @@
   <div class="subtitle">Livraison 7/7 — 14h à 00h</div>
 
   <!-- PRODUITS -->
-
   <div class="product" data-name="Hash Dry" data-price="5">
     <video controls>
       <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
@@ -209,13 +193,34 @@
     function updateCart() {
       cartList.innerHTML = '';
       let total = 0;
+
       for (const name in cartItems) {
         const item = cartItems[name];
         total += item.price * item.quantity;
+
         const li = document.createElement("li");
-        li.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
+        
+        const itemText = document.createElement("span");
+        itemText.className = "item-text";
+        itemText.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "remove-btn";
+        removeBtn.textContent = "🗑️";
+        removeBtn.addEventListener("click", () => {
+          if (item.quantity > 1) {
+            item.quantity--;
+          } else {
+            delete cartItems[name];
+          }
+          updateCart();
+        });
+
+        li.appendChild(itemText);
+        li.appendChild(removeBtn);
         cartList.appendChild(li);
       }
+
       cartTotal.textContent = `Total : ${total}€`;
     }
 
