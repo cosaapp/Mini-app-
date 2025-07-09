@@ -13,23 +13,25 @@
       padding: 20px;
       text-align: center;
     }
+
     h1 {
       color: white;
       margin-bottom: 10px;
       font-size: 26px;
     }
+
     .subtitle {
       color: #ccc;
       font-size: 16px;
       margin-bottom: 20px;
     }
 
-    /* Bouton catégories transparent avec contour */
     .dropdown {
       position: relative;
       display: inline-block;
       margin-bottom: 30px;
     }
+
     .dropbtn {
       background-color: transparent;
       color: white;
@@ -45,11 +47,12 @@
       justify-content: space-between;
       align-items: center;
     }
+
     .dropbtn:focus {
       outline: none;
       box-shadow: 0 0 5px #0088cc;
     }
-    /* Petite flèche à droite */
+
     .dropbtn::after {
       content: '▼';
       font-size: 12px;
@@ -70,6 +73,7 @@
       margin-top: 5px;
       text-align: left;
     }
+
     .dropdown-content button {
       background-color: transparent;
       color: white;
@@ -82,6 +86,7 @@
       border-radius: 0;
       transition: background-color 0.3s ease;
     }
+
     .dropdown-content button:hover {
       background-color: #0088cc;
       color: white;
@@ -94,21 +99,41 @@
       padding: 20px;
       margin: 0 auto 30px;
       max-width: 350px;
-      display: none; /* Masqué par défaut */
+      display: none; /* masqué par défaut */
     }
+
     video {
       width: 100%;
       border-radius: 8px;
     }
+
     .product h2 {
       margin: 15px 0 5px;
       color: white;
     }
+
     .product p {
       font-size: 16px;
       color: #ccc;
       margin-bottom: 15px;
     }
+
+    .stock {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f0;
+      font-size: 14px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .stock::before {
+      content: "✅";
+      margin-right: 6px;
+      font-size: 16px;
+    }
+
     .product button {
       background-color: #0088cc;
       color: white;
@@ -118,9 +143,11 @@
       font-size: 15px;
       cursor: pointer;
     }
+
     .product button:hover {
       background-color: #006699;
     }
+
     button.close-btn {
       background-color: #444;
       margin-top: 20px;
@@ -129,6 +156,7 @@
       font-size: 15px;
       cursor: pointer;
     }
+
     button.close-btn:hover {
       background-color: #222;
     }
@@ -156,6 +184,7 @@
     </video>
     <h2>Hash Dry</h2>
     <p>Prix : 5€ le gramme</p>
+    <div class="stock">Stock disponible</div>
     <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank" rel="noopener">
       <button>Commander</button>
     </a>
@@ -169,6 +198,7 @@
     </video>
     <h2>Weed</h2>
     <p>Prix : 8€ le gramme</p>
+    <div class="stock">Stock disponible</div>
     <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank" rel="noopener">
       <button>Commander</button>
     </a>
@@ -181,7 +211,6 @@
     const dropdownMenu = document.getElementById('dropdownMenu');
     const products = document.querySelectorAll('.product');
 
-    // Fonction pour afficher les produits selon catégorie
     function showProducts(category) {
       products.forEach(product => {
         if (category === 'all' || product.dataset.category === category) {
@@ -192,26 +221,23 @@
       });
     }
 
-    // Par défaut on affiche tous
+    // Par défaut, tout est affiché
     showProducts('all');
 
-    // Toggle affichage dropdown
     categoryBtn.addEventListener('click', () => {
       const isVisible = dropdownMenu.style.display === 'block';
       dropdownMenu.style.display = isVisible ? 'none' : 'block';
     });
 
-    // Clic sur une catégorie dans le menu
     dropdownMenu.querySelectorAll('button').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const selectedCategory = e.target.getAttribute('data-category');
         showProducts(selectedCategory);
-        categoryBtn.textContent = btn.textContent + " ▼"; // Affiche la catégorie choisie
+        categoryBtn.textContent = btn.textContent + " ▼";
         dropdownMenu.style.display = 'none';
       });
     });
 
-    // Clic en dehors du menu dropdown ferme le menu
     window.addEventListener('click', (e) => {
       if (!categoryBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
         dropdownMenu.style.display = 'none';
