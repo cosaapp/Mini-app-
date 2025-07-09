@@ -58,6 +58,17 @@
       content: "✅ ";
     }
 
+    .quantity-input {
+      width: 60px;
+      padding: 5px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid #666;
+      background-color: #000;
+      color: white;
+      text-align: center;
+    }
+
     .product button.add-btn {
       background-color: #0088cc;
       color: white;
@@ -152,24 +163,27 @@
   <h1>CosaNostraShop</h1>
   <div class="subtitle">Livraison 7/7 — 14h à 00h</div>
 
-  <!-- PRODUITS -->
-  <div class="product" data-name="Hash Dry" data-price="5">
+  <!-- PRODUIT : Hash Dry -->
+  <div class="product" data-name="Hash Dry">
     <video controls>
       <source src="https://cosaapp.github.io/Mini-app-/C465B181-B5CF-4BE4-AB9A-2EE261FB99B8.mp4" type="video/mp4">
     </video>
     <h2>Hash Dry</h2>
-    <p>Prix : 5€ le gramme</p>
+    <p>6€/g jusqu’à 5g — puis 5€/g</p>
     <div class="stock">Stock disponible</div>
+    <input class="quantity-input" type="number" min="1" value="1" />
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
-  <div class="product" data-name="Weed OG" data-price="8">
+  <!-- PRODUIT : Weed OG -->
+  <div class="product" data-name="Weed OG">
     <video controls>
       <source src="https://raw.githubusercontent.com/cosaapp/Mini-app-/Main/2.mp4.MP4" type="video/mp4">
     </video>
     <h2>Weed OG</h2>
-    <p>Prix : 8€ le gramme</p>
+    <p>8€/g — 10g = 80€</p>
     <div class="stock">Stock disponible</div>
+    <input class="quantity-input" type="number" min="1" value="1" />
     <button class="add-btn">Ajouter au panier</button>
   </div>
 
@@ -196,23 +210,19 @@
 
       for (const name in cartItems) {
         const item = cartItems[name];
-        total += item.price * item.quantity;
+        total += item.total;
 
         const li = document.createElement("li");
-        
+
         const itemText = document.createElement("span");
         itemText.className = "item-text";
-        itemText.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
+        itemText.textContent = `${item.name} × ${item.quantity}g = ${item.total}€`;
 
         const removeBtn = document.createElement("button");
         removeBtn.className = "remove-btn";
         removeBtn.textContent = "🗑️";
         removeBtn.addEventListener("click", () => {
-          if (item.quantity > 1) {
-            item.quantity--;
-          } else {
-            delete cartItems[name];
-          }
+          delete cartItems[name];
           updateCart();
         });
 
@@ -228,13 +238,23 @@
       btn.addEventListener('click', () => {
         const product = btn.closest('.product');
         const name = product.dataset.name;
-        const price = parseFloat(product.dataset.price);
+        const quantity = parseInt(product.querySelector('.quantity-input').value);
 
-        if (!cartItems[name]) {
-          cartItems[name] = { name, price, quantity: 1 };
-        } else {
-          cartItems[name].quantity += 1;
+        if (isNaN(quantity) || quantity <= 0) return;
+
+        let totalPrice = 0;
+
+        if (name === 'Hash Dry') {
+          totalPrice = quantity <= 5 ? quantity * 6 : quantity * 5;
+        } else if (name === 'Weed OG') {
+          totalPrice = quantity === 10 ? 80 : quantity * 8;
         }
+
+        cartItems[name] = {
+          name: name,
+          quantity: quantity,
+          total: totalPrice
+        };
 
         updateCart();
       });
