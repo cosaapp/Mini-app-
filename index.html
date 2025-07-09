@@ -14,6 +14,28 @@
       text-align: center;
     }
 
+    /* ✅ Motif "Cosa Nostra" en fond diagonal */
+    body::before {
+      content: "Cosa Nostra Cosa Nostra Cosa Nostra Cosa Nostra ";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300%;
+      height: 300%;
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.03);
+      transform: rotate(-45deg);
+      white-space: pre;
+      z-index: 0;
+      pointer-events: none;
+      line-height: 60px;
+    }
+
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+
     h1 {
       font-size: 26px;
       margin-bottom: 10px;
@@ -123,8 +145,7 @@
       font-size: 16px;
     }
 
-    .cart a button,
-    #copy-btn {
+    .cart a button {
       background-color: #0a0;
       color: white;
       border: none;
@@ -132,6 +153,17 @@
       border-radius: 5px;
       margin-top: 10px;
       font-size: 15px;
+      cursor: pointer;
+    }
+
+    .copy-btn {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 14px;
+      margin-top: 10px;
       cursor: pointer;
     }
 
@@ -182,7 +214,7 @@
     <a href="https://www.snapchat.com/add/cosa2nostra" target="_blank">
       <button>Commander sur Snap</button>
     </a>
-    <button id="copy-btn">📋 Copier la commande pour Snapchat</button>
+    <button class="copy-btn" onclick="copyCart()">📋 Copier la commande pour Snapchat</button>
   </div>
 
   <button class="close-btn" onclick="window.Telegram.WebApp.close()">Fermer l'app</button>
@@ -191,7 +223,6 @@
     const cartItems = {};
     const cartList = document.getElementById("cart-items");
     const cartTotal = document.querySelector(".cart-total");
-    const copyBtn = document.getElementById("copy-btn");
 
     function updateCart() {
       cartList.innerHTML = '';
@@ -202,7 +233,6 @@
         total += item.price * item.quantity;
 
         const li = document.createElement("li");
-        
         const itemText = document.createElement("span");
         itemText.className = "item-text";
         itemText.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
@@ -243,29 +273,23 @@
       });
     });
 
-    copyBtn.addEventListener('click', () => {
-      if (Object.keys(cartItems).length === 0) {
-        alert("Le panier est vide !");
-        return;
-      }
-
-      let text = "🛒 Commande pour Snapchat - CosaNostraShop :\n";
+    function copyCart() {
+      let content = "🛒 Commande Cosa Nostra:\n";
       let total = 0;
 
       for (const name in cartItems) {
         const item = cartItems[name];
-        text += `- ${item.name} × ${item.quantity} = ${item.price * item.quantity}€\n`;
+        const line = `${item.name} × ${item.quantity} = ${item.price * item.quantity}€`;
+        content += "• " + line + "\n";
         total += item.price * item.quantity;
       }
 
-      text += `\n💶 Total : ${total}€`;
+      content += `\n💶 Total : ${total}€`;
 
-      navigator.clipboard.writeText(text).then(() => {
-        alert("✅ Commande copiée !");
-      }).catch(() => {
-        alert("❌ Erreur lors de la copie.");
+      navigator.clipboard.writeText(content).then(() => {
+        alert("Commande copiée ✅ Tu peux la coller dans Snapchat !");
       });
-    });
+    }
   </script>
 
 </body>
